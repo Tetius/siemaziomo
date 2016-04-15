@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using hack4wroAPI.Services;
+using hack4WroAPI.Models.Response;
 
 namespace hack4wroAPI.Controllers
 {
@@ -37,7 +38,14 @@ namespace hack4wroAPI.Controllers
             var instagramPosts = await _instagramService.GetMedia(center, distance, InstagramAccessToken);
 
             var instagramPostCoordinates = instagramPosts.data.Select(x => new Coords(x.location.latitude, x.location.longitude));
-            return await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, instagramPostCoordinates);
+            var googleResponse = await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, instagramPostCoordinates);
+            
+            var finalResponse = new ComplexResponse{
+                Posts = instagramPosts.data.Select(x=>new SlimInstagramPost(x)).ToList(),
+                Directions = new SlimGoogleDirections(googleResponse.routes.First())
+            };
+            
+            return Json(finalResponse);
         }
 
 
