@@ -14,7 +14,7 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
-    "System.Net.Http": "4.0.1-rc2-23604",
+    "Microsoft.AspNet.WebApi.Client": "5.2.3",
     "Newtonsoft.Json": "8.0.3"
   },
 
