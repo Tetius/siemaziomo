@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
 using System.Globalization;
-using Newtonsoft.Json.Linq;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using hack4wroAPI.Models.Google;
 
 namespace hack4wroAPI.Services
 {
- public class GoogleMapDirectionsService : IGoogleMapDirectionsService
+    public class GoogleMapDirectionsService : IGoogleMapDirectionsService
  {
      private const string ApiKey = "AIzaSyDJHGBQFL-q4BTb1sjuoKNa6j25iQ-OYl0";
      private readonly Uri apiUrl = new Uri("https://maps.googleapis.com/maps/api/");
      
-     public async Task<dynamic> GibensRoute(Coords origin, Coords destination, IEnumerable<Coords> waypoints)
+     public async Task<GoogleResponse> GibensRoute(Coords origin, Coords destination, IEnumerable<Coords> waypoints)
      {
             using (HttpClient client = new HttpClient())
             {
@@ -27,7 +26,7 @@ namespace hack4wroAPI.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
-                    return await Task.Run(() => JObject.Parse(responseJson));
+                    return await Task.Run(() => JsonConvert.DeserializeObject<GoogleResponse>(responseJson));
                 }
                 throw new InvalidOperationException();
             }
