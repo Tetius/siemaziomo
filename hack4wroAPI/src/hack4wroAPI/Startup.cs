@@ -29,6 +29,8 @@ namespace hack4wroAPI
         {
             // Add framework services.
             services.AddMvc();
+            
+            services.AddSwaggerGen();
 
             services.AddTransient(typeof(IInstagramService), typeof(InstagramService));
             services.AddTransient(typeof(IGoogleMapDirectionsService), typeof(GoogleMapDirectionsService));
@@ -45,6 +47,9 @@ namespace hack4wroAPI
             app.UseStaticFiles();
 
             app.UseMvc();
+            
+            app.UseSwaggerGen("api/swagger/{apiVersion}/swagger.json");
+            app.UseSwaggerUi("api/docs", "/api/swagger/v1/swagger.json");
         }
 
         // Entry point for the application.

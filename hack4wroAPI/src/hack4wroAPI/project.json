@@ -15,7 +15,8 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "Microsoft.AspNet.WebApi.Client": "5.2.3",
-    "Newtonsoft.Json": "8.0.3"
+    "Newtonsoft.Json": "8.0.3",
+    "Swashbuckle": "6.0.0-rc1-final"
   },
 
   "commands": {
