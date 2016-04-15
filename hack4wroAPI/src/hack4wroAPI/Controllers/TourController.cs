@@ -36,8 +36,8 @@ namespace hack4wroAPI.Controllers
             var distance = DistanceUtil.CalculateDistance(parameters.origin, parameters.destination);
             var instagramPosts = await _instagramService.GetMedia(center, distance, InstagramAccessToken);
 
-            var coordsnigga = instagramPosts.data.Select(x => new Coords(x.location.latitude, x.location.longitude));
-            return await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, coordsnigga);
+            var instagramPostCoordinates = instagramPosts.data.Select(x => new Coords(x.location.latitude, x.location.longitude));
+            return await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, instagramPostCoordinates);
         }
 
 
