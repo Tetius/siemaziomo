@@ -31,6 +31,7 @@ namespace hack4wroAPI
             services.AddMvc();
 
             services.AddTransient(typeof(IInstagramService), typeof(InstagramService));
+            services.AddTransient(typeof(IGoogleMapDirectionsService), typeof(GoogleMapDirectionsService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
