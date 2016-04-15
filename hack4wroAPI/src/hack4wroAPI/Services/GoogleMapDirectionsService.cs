@@ -2,15 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace hack4wroAPI.Services
 {
  public class GoogleMapDirectionsService : IGoogleMapDirectionsService
  {
      private const string ApiKey = "AIzaSyDJHGBQFL-q4BTb1sjuoKNa6j25iQ-OYl0";
-     private readonly Uri apiUrl = "https://maps.googleapis.com/maps/api/";
+     private readonly Uri apiUrl = new Uri("https://maps.googleapis.com/maps/api/");
      
-     public Task<dynamic> GibensRoute(Coords origin, Coords destination, IEnumerable<Coords> waypoints)
+     public async Task<dynamic> GibensRoute(Coords origin, Coords destination, IEnumerable<Coords> waypoints)
      {
             using (HttpClient client = new HttpClient())
             {
