@@ -22,7 +22,8 @@ namespace hack4wroAPI.Controllers
         [HttpGet]
         public async Task<dynamic> Get()
         {
-            return await _googleRouteService.GibensRoute(new Coords(51.1065776,17.0769447), new Coords(51.0844,17.06529), new[] {new Coords(51.079897166, 17.06529) });
+            //return await _googleRouteService.GibensRoute(new Coords(51.1065776,17.0769447), new Coords(51.0844,17.06529), new[] {new Coords(51.079897166, 17.06529) });
+            return await _instagramService.GetMedia(new Coords(51.1065776,17.0769447), 1000, "3138468373.3422eb9.143f3edb429a491fa815b9d981a3fcb1");
         }
     }
 }

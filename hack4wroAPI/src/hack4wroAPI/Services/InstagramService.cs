@@ -22,13 +22,13 @@ namespace hack4wroAPI.Services
 
         }
 
-        public async Task<dynamic> GetLocations(double lat, double lng, double distance, string accessToken)
+        public async Task<dynamic> GetLocations(Coords coords, double distance, string accessToken)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = apiUrl;
                 client.DefaultRequestHeaders.Accept.Clear();
-                var path = string.Format($"locations/search?distance={distance.ToString(CultureInfo.InvariantCulture)}&lat={lat.ToString(CultureInfo.InvariantCulture)}&lng={lng.ToString(CultureInfo.InvariantCulture)}&access_token={accessToken}");
+                var path = string.Format($"locations/search?distance={distance.ToString(CultureInfo.InvariantCulture)}&lat={coords.Latitude.ToString(CultureInfo.InvariantCulture)}&lng={coords.Longitude.ToString(CultureInfo.InvariantCulture)}&access_token={accessToken}");
                 var response = await client.GetAsync(path);
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,5 +39,21 @@ namespace hack4wroAPI.Services
             }
         }
         
+        public async Task<dynamic> GetMedia(Coords coords, double distance, string accessToken)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = apiUrl;
+                client.DefaultRequestHeaders.Accept.Clear();
+                var path = string.Format($"media/search?distance={distance.ToString(CultureInfo.InvariantCulture)}&lat={coords.Latitude.ToString(CultureInfo.InvariantCulture)}&lng={coords.Longitude.ToString(CultureInfo.InvariantCulture)}&access_token={accessToken}");
+                var response = await client.GetAsync(path);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    return await Task.Run(() => JObject.Parse(responseJson));
+                }
+                throw new InvalidOperationException();
+            }
+        }
     }
 }
