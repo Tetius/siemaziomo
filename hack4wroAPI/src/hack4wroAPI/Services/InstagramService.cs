@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Globalization;
 using Newtonsoft.Json.Linq;
+using hack4wroAPI.Models.Instagram;
 
 namespace hack4wroAPI.Services
 {
@@ -38,8 +39,8 @@ namespace hack4wroAPI.Services
                 throw new InvalidOperationException();
             }
         }
-        
-        public async Task<dynamic> GetMedia(Coords coords, double distance, string accessToken)
+
+        public async Task<InstagramResponse> GetMedia(Coords coords, double distance, string accessToken)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -50,7 +51,7 @@ namespace hack4wroAPI.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
-                    return await Task.Run(() => JObject.Parse(responseJson));
+                    return await Task.Run(() => JsonConvert.DeserializeObject<InstagramResponse>(responseJson));
                 }
                 throw new InvalidOperationException();
             }

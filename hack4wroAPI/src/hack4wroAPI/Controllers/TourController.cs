@@ -13,11 +13,12 @@ namespace hack4wroAPI.Controllers
         public Coords destination;
         public TimeSpan duration;
     }
-    
-    
+
+
     [Route("api/[controller]")]
     public class TourController : Controller
     {
+        private const string InstagramAccessToken = "3138468373.3422eb9.143f3edb429a491fa815b9d981a3fcb1";
         private readonly IInstagramService _instagramService;
         private readonly IGoogleMapDirectionsService _googleRouteService;
 
@@ -27,11 +28,19 @@ namespace hack4wroAPI.Controllers
             _googleRouteService = googleRouteService;
         }
         // GET: api/tour
-        [HttpGet]
-        public async Task<dynamic> Get([FromBody] GetParams parameters)
+        [HttpPost]
+        public async Task<dynamic> Post([FromBody] GetParams parameters)
         {
-            //return await _googleRouteService.GibensRoute(new Coords(51.1065776,17.0769447), new Coords(51.0844,17.06529), new[] {new Coords(51.079897166, 17.06529) });
-            return await _instagramService.GetMedia(new Coords(51.1065776,17.0769447), 1000, "3138468373.3422eb9.143f3edb429a491fa815b9d981a3fcb1");
+            var center = new Coords();
+            center.Latitude = (parameters.origin.Latitude + parameters.destination.Latitude) / 2;
+            center.Longitude = (parameters.origin.Longitude + parameters.destination.Longitude) / 2;
+            var distance = DistanceUtil.CalculateDistance(parameters.origin, parameters.destination);
+            var instagramPosts = await _instagramService.GetMedia(center, distance, InstagramAccessToken);
+
+            var coordsnigga = instagramPosts.data.Select(x => new Coords(x.location.latitude, x.location.longitude));
+            return await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, coordsnigga);
         }
+
+
     }
 }
