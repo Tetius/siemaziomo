@@ -37,7 +37,7 @@ namespace hack4wroAPI.Controllers
             var center = new Coords();
             center.Latitude = (parameters.origin.Latitude + parameters.destination.Latitude) / 2;
             center.Longitude = (parameters.origin.Longitude + parameters.destination.Longitude) / 2;
-            var distance = DistanceUtil.CalculateDistance(parameters.origin, parameters.destination);
+            var distance = DistanceUtil.CalculateDistance(parameters.origin, parameters.destination) /2;
             var instagramPosts = (await _instagramService.GetMedia(center, distance, InstagramAccessToken)).data.Select(x => new SlimInstagramPost(x)).OrderByDescending(x => x.likes).ToList();
 
             GoogleResponse googleResponse;
@@ -47,7 +47,7 @@ namespace hack4wroAPI.Controllers
                 var instagramPostCoordinates = instagramPosts.Select(x => new Coords(x.location.latitude, x.location.longitude));
                 googleResponse = await _googleRouteService.GibensRoute(parameters.origin, parameters.destination, instagramPostCoordinates);
                 var targetDuration = parameters.duration.TotalSeconds;
-                var routeDuration = googleResponse.routes.SelectMany(r => r.legs).Sum(l => l.duration.value);
+                var routeDuration = googleResponse.routes.SelectMany(r => r.legs).Sum(l => l.duration.value) + instagramPosts.Count * 5 * 60;
                 if (routeDuration - targetDuration <= acceptableDifference || instagramPosts.Count == 0) break;
                 instagramPosts.RemoveAt(instagramPosts.Count - 1);
             }
