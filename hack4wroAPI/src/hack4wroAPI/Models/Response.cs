@@ -11,6 +11,8 @@ namespace hack4WroAPI.Models.Response
         public Location location { get; set; }
         
         public int likes { get; set; }
+
+        public string author { get; set; }
         
         public string image { get; set; }
         public string thumbnail { get; set; }
@@ -21,6 +23,7 @@ namespace hack4WroAPI.Models.Response
             likes = datum.likes.count;
             image = datum.images.standard_resolution.url;
             thumbnail = datum.images.thumbnail.url;
+            author = datum.user.username;
         }
     }
     
